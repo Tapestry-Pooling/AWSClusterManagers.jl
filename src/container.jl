@@ -83,6 +83,7 @@ function Distributed.launch(
         using Distributed
         using Sockets
         sock = connect(ip\"$valid_ip\", $port)
+        redirect_stdout(sock)
         start_worker(sock, \"$(cluster_cookie())\")
         """
     override_cmd = `julia -e $exec`
