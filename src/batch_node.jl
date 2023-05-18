@@ -183,6 +183,7 @@ function start_batch_node_worker()
     # connects to that worker. If that scenario occurs then the manager will become stuck
     # during the setup process.
     withenv("JULIA_WORKER_TIMEOUT" => timeout) do
+        redirect_stdout(sock)
         start_worker(sock, cookie)
     end
 end
