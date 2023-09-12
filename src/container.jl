@@ -37,6 +37,8 @@ desired_workers(::ContainerManager)
 function Distributed.launch(
     manager::ContainerManager, params::Dict, launched::Array, c::Condition
 )
+    exeflags = params[:exeflags]
+
     min_workers, max_workers = desired_workers(manager)
     num_workers = 0
 
@@ -86,7 +88,7 @@ function Distributed.launch(
         redirect_stdout(sock)
         start_worker(sock, \"$(cluster_cookie())\")
         """
-    override_cmd = `julia -e $exec`
+    override_cmd = `julia $exeflags -e $exec`
 
     # Non-blocking spawn of N-containers where N is equal to `max_workers`. Workers will
     # report back to the manager via the open port we just opened.
